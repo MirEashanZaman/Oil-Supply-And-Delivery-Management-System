@@ -1,0 +1,4 @@
+.star-sel{display:flex;flex-direction:row-reverse;gap:.3rem;margin-top:.3rem;}
+.star-sel input{display:none;}
+.star-sel label{font-size:1.7rem;cursor:pointer;color:var(--muted);transition:color .12s;}
+.star-sel input:checked~label,.star-sel label:hover,.star-sel label:hover~label{color:var(--accent);}
