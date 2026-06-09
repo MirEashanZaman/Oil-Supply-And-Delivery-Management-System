@@ -1,0 +1,2 @@
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:900;align-items:center;justify-content:center;}
+.modal-overlay.open{display:flex;}
