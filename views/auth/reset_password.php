@@ -33,14 +33,16 @@
  <label class="lbl">New Password</label>
  <div class="iw">
  <span class="ic"></span>
- <input type="password" name="password" placeholder="At least 6 characters" required>
+ <input type="password" name="password" id="pw" placeholder="At least 6 characters" required>
+ <span class="eye" onclick="var i=document.getElementById('pw'); i.type=i.type==='password'?'text':'password'; this.textContent=i.type==='password'?'Show':'Hide';">Show</span>
  </div>
  </div>
  <div class="form-group">
  <label class="lbl">Confirm New Password</label>
  <div class="iw">
  <span class="ic"></span>
- <input type="password" name="confirm" placeholder="Repeat new password" required>
+ <input type="password" name="confirm" id="pwc" placeholder="Repeat new password" required>
+ <span class="eye" onclick="var i=document.getElementById('pwc'); i.type=i.type==='password'?'text':'password'; this.textContent=i.type==='password'?'Show':'Hide';">Show</span>
  </div>
  </div>
  <button type="submit" class="btn btn-primary btn-block" style="margin-top:.6rem;font-family:'Bebas Neue',sans-serif;font-size:1.25rem;letter-spacing:.12em;padding:.88rem;">
