@@ -75,7 +75,7 @@ function savePhoto($field, $old=''){
 function thumb($photo, $size=44){
     if ($photo && file_exists(UPLOAD_DIR.$photo))
         return "<img src='".UPLOAD_URL.htmlspecialchars($photo)."' style='width:{$size}px;height:{$size}px;object-fit:cover;border-radius:4px;border:1px solid var(--border);vertical-align:middle;'>";
-    return "<span style='display:inline-flex;align-items:center;justify-content:center;width:{$size}px;height:{$size}px;background:var(--surface2);border-radius:4px;border:1px solid var(--border);font-size:".round($size*.5)."px;vertical-align:middle;'>🛢</span>";
+    return "<span style='display:inline-flex;align-items:center;justify-content:center;width:{$size}px;height:{$size}px;background:var(--surface2);border-radius:4px;border:1px solid var(--border);font-size:".round($size*.5)."px;vertical-align:middle;'>O</span>";
 }
 
 function statusBadge($s){
