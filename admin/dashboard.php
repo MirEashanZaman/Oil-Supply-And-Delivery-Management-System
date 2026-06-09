@@ -1,34 +1,8 @@
 <?php
-session_start(); require_once __DIR__.'/../includes/config.php';
+session_start();
+require_once __DIR__.'/../includes/config.php';
 requireLogin(); requireRole('admin');
-$conn=getDB();
-$users   =$conn->query("SELECT COUNT(*) c FROM users WHERE role!='admin'")->fetch_assoc()['c'];
-$orders  =$conn->query("SELECT COUNT(*) c FROM orders")->fetch_assoc()['c'];
-$products=$conn->query("SELECT COUNT(*) c FROM products")->fetch_assoc()['c'];
-$disputes=$conn->query("SELECT COUNT(*) c FROM disputes WHERE status='open'")->fetch_assoc()['c'];
-$revenue =$conn->query("SELECT SUM(total_price) s FROM orders WHERE status='delivered'")->fetch_assoc()['s']??0;
-$recent  =$conn->query("SELECT o.*,u.username cname FROM orders o JOIN users u ON u.user_id=o.customer_id ORDER BY o.created_at DESC LIMIT 8");
-$conn->close();
-?><!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin Dashboard</title><link rel="stylesheet" href="/oil_supply/css/style.css"></head><body><div class="app">
-<?php require_once __DIR__.'/../includes/sidebar.php'; ?>
-<div class="main">
-  <div class="topbar"><div class="topbar-title">Admin Dashboard</div><div class="topbar-actions"><span style="color:var(--muted);font-size:.85rem;">Welcome, <?=htmlspecialchars($_SESSION['username'])?> 👋</span></div></div>
-  <div class="content">
-    <div class="stat-grid">
-      <div class="stat-card"><div class="stat-label">Total Users</div><div class="stat-value"><?=$users?></div></div>
-      <div class="stat-card"><div class="stat-label">Total Orders</div><div class="stat-value"><?=$orders?></div></div>
-      <div class="stat-card"><div class="stat-label">Products</div><div class="stat-value"><?=$products?></div></div>
-      <div class="stat-card"><div class="stat-label">Open Disputes</div><div class="stat-value" style="color:var(--danger);"><?=$disputes?></div></div>
-      <div class="stat-card"><div class="stat-label">Total Revenue</div><div class="stat-value" style="color:var(--success);">$<?=number_format($revenue,0)?></div></div>
-    </div>
-    <div class="card">
-      <div class="card-title">📋 Recent Orders</div>
-      <div class="table-wrap"><table><thead><tr><th>Order ID</th><th>Customer</th><th>Total</th><th>Status</th><th>Date</th><th></th></tr></thead><tbody>
-      <?php if($recent->num_rows===0): ?><tr><td colspan="6"><div class="empty-state">No orders yet.</div></td></tr>
-      <?php else: while($r=$recent->fetch_assoc()): ?>
-      <tr><td><strong>#<?=$r['order_id']?></strong></td><td><?=htmlspecialchars($r['cname'])?></td><td style="color:var(--accent);font-weight:700;">$<?=number_format($r['total_price'],2)?></td><td><?=statusBadge($r['status'])?></td><td style="color:var(--muted);font-size:.8rem;"><?=date('M d, Y',strtotime($r['created_at']))?></td><td><a href="/oil_supply/customer/order_detail.php?id=<?=$r['order_id']?>" class="btn btn-outline btn-sm">View</a></td></tr>
-      <?php endwhile; endif; ?>
-      </tbody></table></div>
-    </div>
-  </div>
-</div></div></body></html>
+require_once __DIR__.'/../controllers/AdminController.php';
+
+$controller = new AdminController(getDB());
+$controller->dashboard();
