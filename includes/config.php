@@ -1,4 +1,8 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 define('DB_HOST', 'localhost');
 define('DB_USER', 'root');
 define('DB_PASS', '');
@@ -7,12 +11,40 @@ define('UPLOAD_DIR', __DIR__.'/../uploads/');
 define('UPLOAD_URL', '/oil_supply/uploads/');
 define('BULK_DEFAULT', 50);
 
+// spl_autoload_register
+spl_autoload_register(function($class_name) {
+    if (file_exists(__DIR__ . '/../models/' . $class_name . '.php')) {
+        require_once __DIR__ . '/../models/' . $class_name . '.php';
+    } elseif (file_exists(__DIR__ . '/../controllers/' . $class_name . '.php')) {
+        require_once __DIR__ . '/../controllers/' . $class_name . '.php';
+    }
+});
+
+// Singleton database connection
 function getDB() {
-    $c = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-    if ($c->connect_error) die("DB Error: ".$c->connect_error);
-    $c->set_charset("utf8mb4");
-    return $c;
+    static $dbConnection = null;
+    if ($dbConnection === null) {
+        $dbConnection = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+        if ($dbConnection->connect_error) {
+            die("DB Error: " . $dbConnection->connect_error);
+        }
+        $dbConnection->set_charset("utf8mb4");
+    }
+    return $dbConnection;
 }
+
+// CSRF Protection
+function getCSRFToken() {
+    if (empty($_SESSION['csrf_token'])) {
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+    }
+    return $_SESSION['csrf_token'];
+}
+
+function validateCSRFToken($token) {
+    return !empty($_SESSION['csrf_token']) && hash_equals($_SESSION['csrf_token'], $token);
+}
+
 function redirect($u){ header("Location: $u"); exit(); }
 function requireLogin(){ if (!isset($_SESSION['user_id'])) redirect('/oil_supply/login.php'); }
 function requireRole($r){ if (!in_array($_SESSION['role']??'',(array)$r)) redirect('/oil_supply/login.php'); }
@@ -21,12 +53,12 @@ function addNotification($uid, $msg, $oid=null){
     $c=getDB();
     $s=$c->prepare("INSERT INTO notifications(user_id,order_id,message) VALUES(?,?,?)");
     $s->bind_param("iis",$uid,$oid,$msg);
-    $s->execute(); $c->close();
+    $s->execute();
 }
 function getUnreadNotifs($uid){
     $c=getDB();
     $s=$c->prepare("SELECT COUNT(*) FROM notifications WHERE user_id=? AND is_read=0");
-    $s->bind_param("i",$uid); $s->execute(); $s->bind_result($n); $s->fetch(); $c->close(); return $n;
+    $s->bind_param("i",$uid); $s->execute(); $s->bind_result($n); $s->fetch(); return $n;
 }
 
 function savePhoto($field, $old=''){
