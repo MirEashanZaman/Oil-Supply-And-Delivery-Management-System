@@ -28,7 +28,13 @@
  <div class="divider"></div>
  <div style="font-family:'Share Tech Mono',monospace;font-size:.65rem;color:var(--muted);letter-spacing:.14em;text-transform:uppercase;margin-bottom:.8rem;">Change Password (optional)</div>
  <div class="form-group"><label class="lbl">Verify Email (required to change password)</label><input type="email" name="verify_email" placeholder="Enter your email to confirm"></div>
- <div class="form-group"><label class="lbl">New Password</label><input type="password" name="new_pw" placeholder="Leave blank to keep current"></div>
+  <div class="form-group">
+    <label class="lbl">New Password</label>
+    <div class="iw">
+      <input type="password" name="new_pw" id="pw" placeholder="Leave blank to keep current">
+      <span class="eye" onclick="var i=document.getElementById('pw'); i.type=i.type==='password'?'text':'password'; this.textContent=i.type==='password'?'Show':'Hide';">Show</span>
+    </div>
+  </div>
  <button type="submit" class="btn btn-primary btn-block">Confirm Changes</button>
  </form>
  </div>
