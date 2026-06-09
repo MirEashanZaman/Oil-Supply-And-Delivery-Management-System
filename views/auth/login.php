@@ -30,11 +30,11 @@
  <div class="iw"><span class="ic"></span><input type="email" name="email" placeholder="Enter Your Email" value="<?=htmlspecialchars($_POST['email']??'')?>" required></div>
  </div>
  <div class="form-group">
- <label class="lbl">Password</label>
- <div class="iw"><span class="ic"></span><input type="password" name="password" id="pw" placeholder="Enter Your Password" required>
- <span class="eye" onclick="var i=document.getElementById('pw');i.type=i.type==='password'?'text':'password'"></span></div>
- <div style="text-align:right;margin-top:.4rem;"><a href="/oil_supply/forgot_password.php" style="color:var(--accent);font-size:.78rem;text-decoration:none;font-weight:600;">Forgot Password?</a></div>
- </div>
+  <label class="lbl">Password</label>
+  <div class="iw"><span class="ic"></span><input type="password" name="password" id="pw" placeholder="Enter Your Password" required>
+  <span class="eye" onclick="var i=document.getElementById('pw'); i.type=i.type==='password'?'text':'password'; this.textContent=i.type==='password'?'Show':'Hide';">Show</span></div>
+  <div style="text-align:right;margin-top:.4rem;"><a href="/oil_supply/forgot_password.php" style="color:var(--accent);font-size:.78rem;text-decoration:none;font-weight:600;">Forgot Password?</a></div>
+  </div>
  <button type="submit" class="btn btn-primary btn-block" style="margin-top:.6rem;font-family:'Bebas Neue',sans-serif;font-size:1.25rem;letter-spacing:.15em;padding:.88rem;">Log In</button>
  </form>
  <div class="or">or</div>
