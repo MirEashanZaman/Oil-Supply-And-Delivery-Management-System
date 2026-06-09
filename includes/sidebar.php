@@ -73,3 +73,28 @@ elseif ($role==='admin') $nav=[
     <a href="<?=$base?>/logout.php" class="btn btn-danger btn-block btn-sm">🚪 Logout</a>
   </div>
 </aside>
+
+<!-- Toast & Global CSRF Auto Injection -->
+<link rel="stylesheet" href="/oil_supply/css/toast.css">
+<script src="/oil_supply/css/toast.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const csrfToken = "<?=getCSRFToken()?>";
+    // Inject CSRF token to all post forms dynamically
+    function injectCSRF() {
+        document.querySelectorAll("form[method='POST'], form[method='post']").forEach(form => {
+            if (!form.querySelector("input[name='csrf_token']")) {
+                const input = document.createElement("input");
+                input.type = "hidden";
+                input.name = "csrf_token";
+                input.value = csrfToken;
+                form.appendChild(input);
+            }
+        });
+    }
+    injectCSRF();
+    // Re-run if DOM changes (useful for dynamic overlays/elements)
+    const observer = new MutationObserver(injectCSRF);
+    observer.observe(document.body, { childList: true, subtree: true });
+});
+</script>
