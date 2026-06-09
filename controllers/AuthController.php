@@ -101,4 +101,108 @@ class AuthController {
         session_destroy();
         redirect("/oil_supply/login.php");
     }
+
+    public function forgotPassword() {
+        $err = "";
+        $ok = "";
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $csrf = $_POST['csrf_token'] ?? '';
+            if (!validateCSRFToken($csrf)) {
+                $err = "Invalid CSRF token.";
+            } else {
+                $email = trim($_POST['email'] ?? '');
+                if (!$email) {
+                    $err = "Please enter your email.";
+                } else {
+                    $user = $this->userModel->getUserByEmail($email);
+                    if (!$user) {
+                        $err = "Email address not found.";
+                    } else {
+                        // Generate token
+                        $token = bin2hex(random_bytes(16));
+                        if (empty($_SESSION['reset_tokens'])) {
+                            $_SESSION['reset_tokens'] = [];
+                        }
+                        $_SESSION['reset_tokens'][$email] = [
+                            'token' => $token,
+                            'expires' => time() + 1800 // 30 minutes
+                        ];
+
+                        // Simulate email logging
+                        $logDir = __DIR__ . '/../uploads/';
+                        if (!file_exists($logDir)) {
+                            mkdir($logDir, 0777, true);
+                        }
+                        $logFile = $logDir . 'email_tokens.log';
+                        $resetLink = "http://localhost/oil_supply/reset_password.php?email=" . urlencode($email) . "&token=" . $token;
+                        $logMsg = "[" . date('Y-m-d H:i:s') . "] Password Reset Link for $email: $resetLink\n";
+                        file_put_contents($logFile, $logMsg, FILE_APPEND);
+
+                        $ok = "Simulated reset email sent! Check the log file at <code>uploads/email_tokens.log</code> for the link.";
+                    }
+                }
+            }
+        }
+
+        $viewFile = __DIR__ . '/../views/auth/forgot_password.php';
+        if (file_exists($viewFile)) {
+            require $viewFile;
+        } else {
+            echo "Forgot Password View not found.";
+        }
+    }
+
+    public function resetPassword() {
+        $err = "";
+        $ok = "";
+        $email = $_GET['email'] ?? '';
+        $token = $_GET['token'] ?? '';
+
+        // Validate token
+        $valid = false;
+        if ($email && $token && !empty($_SESSION['reset_tokens'][$email])) {
+            $saved = $_SESSION['reset_tokens'][$email];
+            if ($saved['token'] === $token && $saved['expires'] > time()) {
+                $valid = true;
+            }
+        }
+
+        if (!$valid) {
+            $err = "Invalid or expired password reset link.";
+        } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $csrf = $_POST['csrf_token'] ?? '';
+            if (!validateCSRFToken($csrf)) {
+                $err = "Invalid CSRF token.";
+            } else {
+                $pass = trim($_POST['password'] ?? '');
+                $conf = trim($_POST['confirm'] ?? '');
+
+                if (strlen($pass) < 6) {
+                    $err = "Password must be at least 6 characters.";
+                } elseif ($pass !== $conf) {
+                    $err = "Passwords do not match.";
+                } else {
+                    $user = $this->userModel->getUserByEmail($email);
+                    if ($user) {
+                        $hash = password_hash($pass, PASSWORD_DEFAULT);
+                        if ($this->userModel->updatePassword($user['user_id'], $hash)) {
+                            unset($_SESSION['reset_tokens'][$email]);
+                            $ok = "Password updated! You can now <a href='/oil_supply/login.php'>login</a>.";
+                        } else {
+                            $err = "Failed to update password.";
+                        }
+                    } else {
+                        $err = "User not found.";
+                    }
+                }
+            }
+        }
+
+        $viewFile = __DIR__ . '/../views/auth/reset_password.php';
+        if (file_exists($viewFile)) {
+            require $viewFile;
+        } else {
+            echo "Reset Password View not found.";
+        }
+    }
 }
