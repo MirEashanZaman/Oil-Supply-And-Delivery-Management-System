@@ -29,6 +29,8 @@ class AuthController {
                     if ($user) {
                         if ($user['status'] === 'banned') {
                             $err = "Your account has been banned.";
+                        } elseif (!password_verify($pass, $user['password'])) {
+                            $err = "Invalid email or password.";
                         } else {
                             $_SESSION['user_id'] = $user['user_id'];
                             $_SESSION['username'] = $user['username'];
