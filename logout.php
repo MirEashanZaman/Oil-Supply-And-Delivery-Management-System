@@ -1,1 +1,7 @@
-<?php session_start(); session_destroy(); header("Location: /oil_supply/login.php"); exit();
+<?php
+session_start();
+require_once __DIR__.'/includes/config.php';
+require_once __DIR__.'/controllers/AuthController.php';
+
+$controller = new AuthController(getDB());
+$controller->logout();
