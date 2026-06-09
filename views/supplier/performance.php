@@ -1,42 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Performance</title>
-    <link rel="stylesheet" href="/oil_supply/css/style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width,initial-scale=1">
+ <title>Performance</title>
+ <link rel="stylesheet" href="/oil_supply/css/style.css">
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 </head>
 <body>
 <div class="app">
-    <?php require_once __DIR__.'/../../includes/sidebar.php'; ?>
-    <div class="main">
-        <div class="topbar">
-            <div class="topbar-title">Performance Metrics</div>
-            <div class="topbar-actions"><span style="font-family:'Share Tech Mono',monospace;font-size:.68rem;color:var(--muted);">Last Updated: <?=date('M d, Y')?></span></div>
-        </div>
-        <div class="content">
-            <div class="stat-grid">
-                <div class="stat-card"><div class="stat-label">On-Time Delivery %</div><div class="stat-value"><?=$otd?>%</div></div>
-                <div class="stat-card"><div class="stat-label">Rejection Rate</div><div class="stat-value" style="color:var(--danger);"><?=$rej?>%</div></div>
-                <div class="stat-card"><div class="stat-label">Total Delivered</div><div class="stat-value" style="color:var(--success);"><?=$dlv?></div></div>
-                <div class="stat-card">
-                    <div class="stat-label">Avg Rating</div>
-                    <div class="stat-value" style="color:var(--accent);"><?=$fb['r']??'—'?></div>
-                    <?php if(!empty($fb['r'])): ?><div class="stars"><?=str_repeat('★',round($fb['r'])).str_repeat('☆',5-round($fb['r']))?></div><?php endif; ?>
-                    <div class="stat-sub"><?=intval($fb['c'] ?? 0)?> reviews</div>
-                </div>
-            </div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;">
-                <div class="card"><div class="card-title">📈 Deliveries – Last 6 Months</div>
-                    <?php if(empty($ml)): ?><div class="empty-state">No Data Available</div>
-                    <?php else: ?><canvas id="dlvChart" height="200"></canvas><?php endif; ?></div>
-                <div class="card"><div class="card-title">🥧 Order Breakdown</div>
-                    <?php if($tot===0): ?><div class="empty-state">No Data Available</div>
-                    <?php else: ?><canvas id="pieChart" height="200"></canvas><?php endif; ?></div>
-            </div>
-        </div>
-    </div>
+ <?php require_once __DIR__.'/../../includes/sidebar.php'; ?>
+ <div class="main">
+ <div class="topbar">
+ <div class="topbar-title">Performance Metrics</div>
+ <div class="topbar-actions"><span style="font-family:'Share Tech Mono',monospace;font-size:.68rem;color:var(--muted);">Last Updated: <?=date('M d, Y')?></span></div>
+ </div>
+ <div class="content">
+ <div class="stat-grid">
+ <div class="stat-card"><div class="stat-label">On-Time Delivery %</div><div class="stat-value"><?=$otd?>%</div></div>
+ <div class="stat-card"><div class="stat-label">Rejection Rate</div><div class="stat-value" style="color:var(--danger);"><?=$rej?>%</div></div>
+ <div class="stat-card"><div class="stat-label">Total Delivered</div><div class="stat-value" style="color:var(--success);"><?=$dlv?></div></div>
+ <div class="stat-card">
+ <div class="stat-label">Avg Rating</div>
+ <div class="stat-value" style="color:var(--accent);"><?=$fb['r']??'—'?></div>
+ <?php if(!empty($fb['r'])): ?><div class="stars"><?=str_repeat('',round($fb['r'])).str_repeat('',5-round($fb['r']))?></div><?php endif; ?>
+ <div class="stat-sub"><?=intval($fb['c'] ?? 0)?> reviews</div>
+ </div>
+ </div>
+ <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;">
+ <div class="card"><div class="card-title"> Deliveries – Last 6 Months</div>
+ <?php if(empty($ml)): ?><div class="empty-state">No Data Available</div>
+ <?php else: ?><canvas id="dlvChart" height="200"></canvas><?php endif; ?></div>
+ <div class="card"><div class="card-title"> Order Breakdown</div>
+ <?php if($tot===0): ?><div class="empty-state">No Data Available</div>
+ <?php else: ?><canvas id="pieChart" height="200"></canvas><?php endif; ?></div>
+ </div>
+ </div>
+ </div>
 </div>
 <script>
 const opts={responsive:true,plugins:{legend:{display:false}},scales:{x:{grid:{color:'rgba(255,255,255,.04)'},ticks:{color:'#7a6e5e'}},y:{grid:{color:'rgba(255,255,255,.04)'},ticks:{color:'#7a6e5e'},beginAtZero:true}}};
