@@ -1,0 +1,11 @@
+.neg-card{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:1.2rem;margin-bottom:.9rem;transition:border-color .18s;}
+.neg-card.pending{border-left:3px solid var(--warning);}
+.neg-card.accepted{border-left:3px solid var(--success);}
+.neg-card.rejected{border-left:3px solid var(--danger);}
+.neg-card.countered{border-left:3px solid var(--info);}
+.pi{display:flex;flex-direction:column;gap:.08rem;}
+.pi .pl{font-family:'Share Tech Mono',monospace;font-size:.6rem;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;}
+.pi .pv{font-weight:700;font-size:.98rem;}
+.price-row{display:flex;gap:1.3rem;flex-wrap:wrap;margin:.6rem 0;}
+.cbox{background:rgba(58,155,224,.07);border:1px solid rgba(58,155,224,.22);border-radius:4px;padding:.8rem 1rem;margin-top:.7rem;}
+.cbox .ct{font-family:'Share Tech Mono',monospace;font-size:.6rem;letter-spacing:.14em;color:var(--info);text-transform:uppercase;margin-bottom:.5rem;}
