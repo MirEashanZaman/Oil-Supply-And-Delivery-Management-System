@@ -1,1 +1,8 @@
-<?php require_once __DIR__.'/../supplier/market.php';
+<?php
+session_start();
+require_once __DIR__.'/../includes/config.php';
+requireLogin(); requireRole(['supplier','dealer']);
+require_once __DIR__.'/../controllers/DealerController.php';
+
+$controller = new DealerController(getDB());
+$controller->market();
