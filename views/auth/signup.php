@@ -32,9 +32,21 @@
  </div>
  <div class="form-group"><label class="lbl">E-Mail</label><input type="email" name="email" placeholder="your@email.com" value="<?=htmlspecialchars($_POST['email']??'')?>" required></div>
  <div class="form-row">
- <div class="form-group"><label class="lbl">Password</label><input type="password" name="password" placeholder="Min 6 chars" required></div>
- <div class="form-group"><label class="lbl">Confirm</label><input type="password" name="confirm" placeholder="Repeat password" required></div>
- </div>
+  <div class="form-group">
+    <label class="lbl">Password</label>
+    <div class="iw">
+      <input type="password" name="password" id="pw" placeholder="Min 6 chars" required>
+      <span class="eye" onclick="var i=document.getElementById('pw'); i.type=i.type==='password'?'text':'password'; this.textContent=i.type==='password'?'Show':'Hide';">Show</span>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="lbl">Confirm</label>
+    <div class="iw">
+      <input type="password" name="confirm" id="pwc" placeholder="Repeat password" required>
+      <span class="eye" onclick="var i=document.getElementById('pwc'); i.type=i.type==='password'?'text':'password'; this.textContent=i.type==='password'?'Show':'Hide';">Show</span>
+    </div>
+  </div>
+  </div>
  <div class="form-group"><label class="lbl">Address</label><input type="text" name="address" placeholder="Your full address" value="<?=htmlspecialchars($_POST['address']??'')?>" required></div>
  <div class="form-group">
  <label class="lbl">Role</label>
