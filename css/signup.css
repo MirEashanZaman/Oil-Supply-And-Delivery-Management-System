@@ -1,0 +1,19 @@
+body{display:flex;align-items:stretch;min-height:100vh;}
+.hero{flex:1;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.hero-bg{position:absolute;inset:0;background:linear-gradient(135deg,rgba(10,12,15,.72),rgba(10,12,15,.4)),url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=1400&q=80')center/cover;animation:zb 20s ease-in-out infinite alternate;}
+@keyframes zb{from{transform:scale(1.05)}to{transform:scale(1.12)}}
+.hero-ov{position:absolute;inset:0;background:linear-gradient(90deg,transparent 55%,var(--bg)100%);}
+.hero-in{position:relative;text-align:center;padding:2rem;}
+.ht{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.8rem,5vw,5rem);line-height:.92;color:#fff;}
+.ht span{display:block;color:var(--accent);font-size:.62em;letter-spacing:.22em;}
+.panel{width:460px;min-height:100vh;background:rgba(15,20,28,.92);backdrop-filter:blur(24px);border-left:1px solid var(--border);display:flex;flex-direction:column;justify-content:center;padding:2rem 2.5rem;position:relative;overflow-y:auto;animation:fadeUp .65s ease both .2s;}
+.panel::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--accent),transparent);}
+.ph{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:.06em;color:#fff;margin-bottom:.2rem;}
+.ps{font-family:'Share Tech Mono',monospace;font-size:.7rem;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;margin-bottom:1.4rem;}
+.role-row{display:flex;gap:.5rem;}
+.ro{flex:1;position:relative;}
+.ro input[type=radio]{position:absolute;opacity:0;width:0;height:0;}
+.ro label{display:flex;align-items:center;justify-content:center;gap:.3rem;background:var(--input-bg);border:1px solid var(--border);border-radius:var(--radius);padding:.55rem .3rem;cursor:pointer;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;font-family:'Share Tech Mono',monospace;color:var(--muted);transition:all .18s;margin:0;}
+.ro input:checked+label{background:rgba(240,130,10,.12);border-color:var(--accent);color:var(--accent);}
+.ro label:hover{border-color:rgba(240,130,10,.4);color:var(--text);}
+@media(max-width:760px){body{flex-direction:column}.hero{min-height:190px;flex:none}.hero-ov{background:linear-gradient(180deg,transparent 40%,var(--bg)100%)}.panel{width:100%;border-left:none;border-top:1px solid var(--border);min-height:auto}.form-row{grid-template-columns:1fr}}
