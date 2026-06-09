@@ -1,0 +1,9 @@
+.nc{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:1.1rem;margin-bottom:.9rem;}
+.nc.pending{border-left:3px solid var(--warning);}.nc.accepted{border-left:3px solid var(--success);}.nc.rejected{border-left:3px solid var(--danger);}.nc.countered{border-left:3px solid var(--info);}
+.pr{display:flex;gap:1.2rem;flex-wrap:wrap;margin:.55rem 0;}
+.pi .pl{font-family:'Share Tech Mono',monospace;font-size:.58rem;letter-spacing:.13em;color:var(--muted);text-transform:uppercase;}
+.pi .pv{font-weight:700;font-size:.95rem;}
+.subform{background:rgba(58,155,224,.06);border:1px solid rgba(58,155,224,.2);border-radius:4px;padding:.8rem 1rem;display:none;margin-top:.5rem;}
+.subform.open{display:block;}
+.rsubform{background:rgba(224,90,58,.06);border:1px solid rgba(224,90,58,.2);border-radius:4px;padding:.8rem 1rem;display:none;margin-top:.5rem;}
+.rsubform.open{display:block;}
