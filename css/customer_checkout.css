@@ -1,0 +1,63 @@
+/* Bulk negotiation section */
+.bulk-section {
+    background: rgba(240,130,10,.06);
+    border: 1px solid rgba(240,130,10,.25);
+    border-radius: 6px;
+    padding: 1.2rem;
+    margin-bottom: 1.3rem;
+}
+.bulk-section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.2rem;
+    letter-spacing: .06em;
+    color: var(--accent2);
+    margin-bottom: .3rem;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+}
+.bulk-section-sub {
+    font-size: .78rem;
+    color: var(--muted);
+    font-family: 'Share Tech Mono', monospace;
+    margin-bottom: 1rem;
+}
+.bulk-item-row {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: .85rem 1rem;
+    margin-bottom: .7rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+.bulk-item-info { flex: 1; }
+.bulk-item-name { font-weight: 700; font-size: .95rem; }
+.bulk-item-meta { font-size: .78rem; color: var(--muted); margin-top: .15rem; }
+.bulk-item-price { font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; letter-spacing: .04em; color: var(--accent); }
+
+/* Negotiate form inside each item */
+.neg-form-wrap {
+    display: none;
+    margin-top: .8rem;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: .9rem 1rem;
+    animation: fadeUp .2s ease;
+}
+.neg-form-wrap.open { display: block; }
+.price-calc-mini {
+    background: rgba(240,130,10,.08);
+    border-radius: 4px;
+    padding: .6rem .8rem;
+    font-size: .82rem;
+    margin: .6rem 0;
+    display: none;
+}
+.price-calc-mini.show { display: block; }
+.calc-row { display: flex; justify-content: space-between; padding: .1rem 0; }
+.calc-total { font-weight: 700; color: var(--accent); border-top: 1px solid var(--border); margin-top: .3rem; padding-top: .3rem; }
