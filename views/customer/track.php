@@ -6,6 +6,9 @@
     <title>Track Order</title>
     <link rel="stylesheet" href="/oil_supply/css/style.css">
     <link rel="stylesheet" href="/oil_supply/css/track.css">
+    <!-- Leaflet Maps CSS and JS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 <body>
 <div class="app">
@@ -33,8 +36,7 @@
                     <?php endforeach; endif; ?>
                 </div>
                 <div class="map-frame">
-                    <?php $addr=$sel?urlencode($sel['address']):urlencode('Dhaka, Bangladesh'); ?>
-                    <iframe src="https://maps.google.com/maps?q=<?=$addr?>&output=embed&z=13" allowfullscreen loading="lazy"></iframe>
+                    <div id="leaflet-map" style="width:100%; height:100%; min-height: 400px; background: #0c0d12;"></div>
                 </div>
             </div>
             <?php if($sel): ?>
@@ -51,5 +53,91 @@
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // Coordinates calculation
+    const defaultLat = 23.8103;
+    const defaultLng = 90.4125;
+    
+    let mapCenter = [defaultLat, defaultLng];
+    let showRoute = false;
+    let depotCoords = [defaultLat, defaultLng];
+    let destCoords = [defaultLat, defaultLng];
+
+    <?php if($sel): ?>
+        showRoute = true;
+        const oid = <?=intval($sel['order_id'])?>;
+        // Generate coordinates deterministically from order ID
+        const offsetLat = ((oid % 10) - 5) * 0.004;
+        const offsetLng = ((oid % 7) - 3) * 0.005;
+        
+        depotCoords = [defaultLat - 0.01, defaultLng - 0.01];
+        destCoords = [defaultLat + offsetLat, defaultLng + offsetLng];
+        mapCenter = [(depotCoords[0] + destCoords[0]) / 2, (depotCoords[1] + destCoords[1]) / 2];
+    <?php endif; ?>
+
+    // Initialize Leaflet map
+    const map = L.map('leaflet-map', {
+        zoomControl: true,
+        attributionControl: false
+    }).setView(mapCenter, <?=$sel ? '14' : '13'?>);
+
+    // Dark theme tile layer
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        maxZoom: 20
+    }).addTo(map);
+
+    if (showRoute) {
+        // Depot marker
+        const depotMarker = L.circleMarker(depotCoords, {
+            radius: 8,
+            fillColor: "#3b82f6",
+            color: "#fff",
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.8
+        }).addTo(map).bindPopup("<b>🏭 Distribution Center</b>");
+
+        // Destination marker
+        const destMarker = L.circleMarker(destCoords, {
+            radius: 8,
+            fillColor: "#f0820a",
+            color: "#fff",
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.8
+        }).addTo(map).bindPopup("<b>📍 Delivery Destination</b><br><?=htmlspecialchars($sel['address'] ?? '')?>");
+
+        // Draw line representing route
+        const routeLine = L.polyline([depotCoords, destCoords], {
+            color: 'rgba(240, 130, 10, 0.4)',
+            weight: 4,
+            dashArray: '5, 10'
+        }).addTo(map);
+
+        // Simulated truck movement
+        const truckMarker = L.circleMarker(depotCoords, {
+            radius: 6,
+            fillColor: "#10b981",
+            color: "#fff",
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 1
+        }).addTo(map).bindPopup("<b>🚚 Delivery Truck (Live Position)</b>");
+
+        let progress = 0;
+        setInterval(() => {
+            progress = (progress + 0.01) % 1.0;
+            const lat = depotCoords[0] + (destCoords[0] - depotCoords[0]) * progress;
+            const lng = depotCoords[1] + (destCoords[1] - depotCoords[1]) * progress;
+            truckMarker.setLatLng([lat, lng]);
+        }, 100);
+    } else {
+        // Default center marker
+        L.marker(mapCenter).addTo(map).bindPopup("<b>🏭 Central Depot</b><br>Select an order to track delivery.");
+    }
+});
+</script>
 </body>
 </html>
