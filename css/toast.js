@@ -16,10 +16,10 @@
         const toast = document.createElement('div');
         toast.className = `toast toast-${type}`;
         
-        let icon = '✔';
-        if (type === 'danger') icon = '❌';
-        if (type === 'info') icon = 'ℹ';
-        if (type === 'warning') icon = '⚠';
+        let icon = 'v';
+        if (type === 'danger') icon = 'x';
+        if (type === 'info') icon = 'i';
+        if (type === 'warning') icon = '!';
 
         toast.innerHTML = `
             <div class="toast-icon">${icon}</div>
