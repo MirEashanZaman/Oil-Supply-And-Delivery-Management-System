@@ -916,3 +916,29 @@ input[type=file] {
     grid-template-columns: 1fr;
   }
 }
+
+/* Password visibility eye toggle */
+.iw {
+  position: relative;
+}
+.iw input {
+  padding-right: 3.5rem !important;
+}
+.eye {
+  position: absolute;
+  right: .9rem;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: var(--accent);
+  font-size: .75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  transition: color 0.18s;
+  user-select: none;
+  font-family: 'Share Tech Mono', monospace;
+  z-index: 10;
+}
+.eye:hover {
+  color: var(--accent2);
+}
